@@ -1,59 +1,36 @@
 import { prisma } from "./prisma";
 import express from "express";
+import cors from 'cors'
 import { latestsNews } from "./getLatestsNews";
 import { getNextFixture } from "./getNextFixtures";
 
 
 
 const app = express();
-const PORT = 3333
+app.use(cors());
 app.use(express.json())
 
 
-// app.post("/clubs", async (req, res) => {
-//   const { clubs } = req.body
-//   console.log(clubs)
-//   clubs.forEach(async(club: { name: string; source_url: string; logo_url: string; }) => {
-//     await prisma.club.create({
-//     data: {
-//       name: club.name,
-//       source_url: club.source_url,
-//       logo_url: club.logo_url
-//     }
-//   })})
+app.post("/clubs", async (req, res) => {
+  const { clubs } = req.body
+  console.log(clubs)
+  clubs.forEach(async(club: { name: string; source_url: string; logo_url: string; location:string; }) => {
+    await prisma.club.create({
+    data: {
+      name: club.name,
+      source_url: club.source_url,
+      logo_url: club.logo_url,
+      location: club.location,
+    }
+  })})
 
-//   return res.status(201).send('ok')
-// })
+  return res.status(201).send('ok')
+})
 
 app.get('/clubs', async(req, res) => {
-  const brazilianClubsSerieA = await prisma.club.findMany({
-    where: {
-          location: "serie-a"
-        },
-    orderBy: {
-      name: "asc"
-    }
-  })
+  const clubs = await prisma.club.findMany()
 
-  const brazilianClubsSerieB = await prisma.club.findMany({
-    where: {
-      location: "serie-b"
-    },
-    orderBy: {
-      name: "asc"
-    }
-  })
-
-  const europeanClubs = await prisma.club.findMany({
-    where: {
-      location: "europa"
-    },
-    orderBy: {
-      name: "asc"
-    }
-  })
-
-  res.json({data: { brazilianClubsSerieA, brazilianClubsSerieB, europeanClubs }})
+  res.json({ clubs })
 })
 
 app.get('/latestsnews', async(req, res)=> {
@@ -71,6 +48,6 @@ app.get('/latestsnews', async(req, res)=> {
 // })
 
 
-app.listen(PORT, () => {
-  console.log(`Server is runnung at port ${PORT}.` )
+app.listen(process.env.PORT || 3333, () => {
+  console.log('Server is runnung at port.')
 })
