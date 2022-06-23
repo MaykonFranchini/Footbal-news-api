@@ -33,9 +33,16 @@ app.get('/clubs', async(req, res) => {
   res.json({ clubs })
 })
 
-app.get('/latestsnews', async(req, res)=> {
-  const  { source_url } = req.body
-  const news = await latestsNews(source_url)
+app.get('/latestsnews/:club', async(req, res)=> {
+  const  { club } = req.params
+  
+  const clubData = await prisma.club.findFirst({
+    where: {
+      name: club,
+    }
+  })
+  
+  const news = await latestsNews(clubData!.source_url)
   return res.json({data: news})
 })
 
