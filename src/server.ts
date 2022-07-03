@@ -46,6 +46,32 @@ app.get('/latestsnews/:club', async(req, res)=> {
   return res.json({data: news})
 })
 
+app.post('/subscription', async(req, res)=> {
+  const { email, club_id, first_name, last_name } = req.body
+  const user = await prisma.user.create({
+    data: {
+      email,
+      club_id,
+      first_name,
+      last_name
+    }
+  })
+  return res.status(201).json({user})
+})
+
+app.get('/profile/:club', async(req, res)=> {
+  const { club } = req.params
+  const data = await prisma.club.findFirst({
+    where: {
+      name: club
+    },
+    include: {
+      fans: true
+    }
+  })
+  return res.json({data})
+})
+
 // app.get('/nextfixture', async(req, res)=> {
 //   const  { source_url } = req.body
 

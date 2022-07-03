@@ -18,5 +18,18 @@ model Club {
   source_url String
   logo_url   String
   location   String @default(value: "Brasil")
+  fans       User[]
   @@map("clubs")
+}
+
+model User {
+
+  id             String @id @default(uuid())
+  favourite_club Club   @relation(fields: [club_id], references: [id])
+  club_id        String @default(value: "")
+  email          String @unique
+  first_name     String @default(value: "")
+  last_name      String @default(value: "")
+
+  @@map("users")
 }
