@@ -48,7 +48,8 @@ app.get('/latestsnews/:club', async(req, res)=> {
 
 app.post('/subscription', async(req, res)=> {
   const { email, club_id, first_name, last_name } = req.body
-  const user = await prisma.user.create({
+  try {
+    const user = await prisma.user.create({
     data: {
       email,
       club_id,
@@ -57,6 +58,10 @@ app.post('/subscription', async(req, res)=> {
     }
   })
   return res.status(201).json({user})
+  } catch (error) {
+    return res.status(400).json({error})
+  }
+  
 })
 
 app.get('/profile/:club', async(req, res)=> {
