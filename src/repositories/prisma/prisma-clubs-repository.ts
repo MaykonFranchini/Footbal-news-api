@@ -1,4 +1,4 @@
-import { ClubsCreateData, ClubsRepository } from "../clubs-repository";
+import { Club, ClubsCreateData, ClubsRepository } from "../clubs-repository";
 import { prisma } from '../../prisma';
 
 export class PrismaClubsRepository implements ClubsRepository {
@@ -11,5 +11,10 @@ export class PrismaClubsRepository implements ClubsRepository {
         location
       }
     })
+  }
+
+  async findAll() {
+    const clubs = await prisma.club.findMany()
+    return clubs
   }
 }

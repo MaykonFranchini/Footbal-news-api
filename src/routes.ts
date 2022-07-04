@@ -3,6 +3,7 @@ import { latestsNews } from './getLatestsNews';
 import { prisma } from './prisma';
 import { PrismaClubsRepository } from './repositories/prisma/prisma-clubs-repository';
 import { CreateClubUseCase } from './useCases/create-club-use-case';
+import { ListClubsUseCase } from './useCases/list-clubs-use-case';
 
 export const routes = express.Router();
 
@@ -23,8 +24,10 @@ routes.post("/clubs", async (req, res) => {
 })
 
 routes.get('/clubs', async(req, res) => {
-  const clubs = await prisma.club.findMany()
-
+  const prismaClubsRepository = new PrismaClubsRepository()
+  const listClubsUseCase = new ListClubsUseCase(prismaClubsRepository)
+  const clubs = await listClubsUseCase.execute()
+  
   res.json({ clubs })
 })
 
