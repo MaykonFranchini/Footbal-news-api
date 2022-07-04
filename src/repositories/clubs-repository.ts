@@ -24,4 +24,5 @@ export interface Club {
 export interface ClubsRepository {
   create: (data: ClubsCreateData) => void;
   findAll: () => Promise<Club[]>;
+  findByName: (name: string) => Promise<Club | null>;
 }

@@ -17,4 +17,13 @@ export class PrismaClubsRepository implements ClubsRepository {
     const clubs = await prisma.club.findMany()
     return clubs
   }
+
+  async findByName(name: string) {
+    const club = await prisma.club.findFirst({
+      where: {
+        name
+      }
+    })
+    return club
+  }
 }

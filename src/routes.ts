@@ -3,6 +3,7 @@ import { latestsNews } from './getLatestsNews';
 import { prisma } from './prisma';
 import { PrismaClubsRepository } from './repositories/prisma/prisma-clubs-repository';
 import { CreateClubUseCase } from './useCases/create-club-use-case';
+import { LatestsNewsUseCase } from './useCases/latests-news-use-case';
 import { ListClubsUseCase } from './useCases/list-clubs-use-case';
 
 export const routes = express.Router();
@@ -32,15 +33,12 @@ routes.get('/clubs', async(req, res) => {
 })
 
 routes.get('/latestsnews/:club', async(req, res)=> {
-  const  { club } = req.params
+  const { club } = req.params
+  const prismaClubsRepository = new PrismaClubsRepository()
+  const latestsNewsUseCase = new LatestsNewsUseCase(prismaClubsRepository)
   
-  const clubData = await prisma.club.findFirst({
-    where: {
-      name: club,
-    }
-  })
-  
-  const news = await latestsNews(clubData!.source_url)
+  const news = await latestsNewsUseCase.execute({club})
+
   return res.json({data: news})
 })
 
