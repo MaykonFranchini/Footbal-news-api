@@ -2,7 +2,9 @@ import express from 'express';
 import { latestsNews } from './getLatestsNews';
 import { prisma } from './prisma';
 import { PrismaClubsRepository } from './repositories/prisma/prisma-clubs-repository';
+import { PrismaUsersrepository } from './repositories/prisma/prisma-users-repository';
 import { CreateClubUseCase } from './useCases/create-club-use-case';
+import { CreateUserUsecase } from './useCases/create-user-use-case';
 import { LatestsNewsUseCase } from './useCases/latests-news-use-case';
 import { ListClubsUseCase } from './useCases/list-clubs-use-case';
 
@@ -44,20 +46,22 @@ routes.get('/latestsnews/:club', async(req, res)=> {
 
 routes.post('/subscription', async(req, res)=> {
   const { email, club_id, first_name, last_name } = req.body
+  
+  const prismaUserRepository = new PrismaUsersrepository()
+  const createUserUsecase = new CreateUserUsecase(prismaUserRepository)
+ 
   try {
-    const user = await prisma.user.create({
-    data: {
-      email,
-      club_id,
+    const user = await createUserUsecase.execute({
+      email, 
+      club_id, 
       first_name,
       last_name
-    }
   })
   return res.status(201).json({user})
-  } catch (error) {
-    return res.status(400).json({error})
-  }
-  
+} catch (error) {
+  return res.status(400).json({error})
+}
+
 })
 
 routes.get('/profile/:club', async(req, res)=> {
@@ -80,3 +84,20 @@ routes.get('/profile/:club', async(req, res)=> {
 
 //   return res.json({data: nextFixture})
 // })
+
+
+
+
+// try {
+//   const user = await prisma.user.create({
+//   data: {
+//     email,
+//     club_id,
+//     first_name,
+//     last_name
+//   }
+// })
+// return res.status(201).json({user})
+// } catch (error) {
+//   return res.status(400).json({error})
+// }

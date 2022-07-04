@@ -5,8 +5,7 @@ export interface ClubsCreateData {
   location: string;
 }
 
-interface Users {
-  id: string;
+export interface Users {
   email: string;
   club_id: string;
   first_name: string;
