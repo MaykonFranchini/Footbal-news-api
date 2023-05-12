@@ -19,9 +19,10 @@ export class PrismaClubsRepository implements ClubsRepository {
   }
 
   async findByName(name: string) {
+    const clubName = name.charAt(0).toUpperCase() + name.slice(1);
     const club = await prisma.club.findFirst({
       where: {
-        name
+        name: clubName
       }
     })
     return club
