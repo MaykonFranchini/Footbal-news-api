@@ -18,7 +18,7 @@ async function saveNewsToDb() {
   }
 }
 
-const task = cron.schedule(' 40 18 * * *', ()=> {
+const task = cron.schedule(' 15 19 * * *', ()=> {
   saveNewsToDb()
 })
 
