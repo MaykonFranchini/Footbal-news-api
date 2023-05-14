@@ -24,8 +24,8 @@ CREATE TABLE "users" (
 CREATE TABLE "news" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
-    "link" TEXT NOT NULL,
-    "image_url" TEXT NOT NULL,
+    "link" TEXT,
+    "image_url" TEXT,
     "source_name" TEXT NOT NULL,
     "source_img" TEXT NOT NULL,
     "club_id" TEXT NOT NULL,

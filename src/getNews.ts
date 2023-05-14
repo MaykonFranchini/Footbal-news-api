@@ -18,7 +18,7 @@ async function saveNewsToDb() {
   }
 }
 
-const task = cron.schedule(' 30 17 * * *', ()=> {
+const task = cron.schedule(' 32 18 * * *', ()=> {
   saveNewsToDb()
 })
 
@@ -26,4 +26,3 @@ const task = cron.schedule(' 30 17 * * *', ()=> {
 export function getNewsJob() {
   task.start()
 }
-
