@@ -12,17 +12,20 @@ export const routes = express.Router();
 
 
 routes.post("/clubs", async (req, res) => {
-  const { name, source_url, logo_url, location} = req.body
+  // const { name, source_url, logo_url, location} = req.body
+  const { clubs } = req.body
   const prismaClubsRepository = new PrismaClubsRepository()
   const createClubUseCase = new CreateClubUseCase(prismaClubsRepository);
-
-  await createClubUseCase.execute({
-    name, 
-    source_url, 
-    logo_url, 
-    location
-  })
-
+  console.log(clubs)
+  for (const club of clubs) {
+    await createClubUseCase.execute({
+      name: club.name, 
+      source_url: club.source_url, 
+      logo_url: club.logo_url, 
+      location: club.location
+    })
+  
+  }
   return res.status(201).send()
 })
 

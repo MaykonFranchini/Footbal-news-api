@@ -23,6 +23,9 @@ export class PrismaClubsRepository implements ClubsRepository {
     const club = await prisma.club.findFirst({
       where: {
         name: clubName
+      },
+      include: {
+        News: true,
       }
     })
     return club

@@ -1,3 +1,5 @@
+import { News } from "./news-repository";
+
 export interface ClubsCreateData {
   name: string;
   source_url: string;
@@ -18,10 +20,11 @@ export interface Club {
   source_url: string;
   logo_url: string;
   location: string;
+  News?: News[];
 }
 
 export interface ClubsRepository {
   create: (data: ClubsCreateData) => void;
   findAll: () => Promise<Club[]>;
-  findByName: (name: string) => Promise<Club | null>;
+  findByName: (name: string) => Promise<Club & {News: News[]} | null>;
 }

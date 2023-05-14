@@ -11,7 +11,7 @@ export class LatestsNewsUseCase {
   async execute(request :ListClubRequest) {
     const { club } = request;
     const clubData = await this.clubsRepository.findByName(club);
-    const news = await latestsNews(clubData!.source_url);
-    return news;
+   
+      return clubData!.News
   }
 }
